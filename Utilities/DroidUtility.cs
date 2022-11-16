@@ -71,10 +71,10 @@ namespace Androids
                 }
 
                 //Appearance
-                pawnBeingCrafted.story.melanin = 1f;
-                pawnBeingCrafted.story.crownType = CrownType.Average;
+                //pawnBeingCrafted.story.melanin = 1f;
+                pawnBeingCrafted.story.headType.gender = pawnBeingCrafted.gender;
 
-                if(spawnProperties != null && spawnProperties.generateHair)
+                if (spawnProperties != null && spawnProperties.generateHair)
                 {
                     IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                                   where hair.styleTags.SharesElementWith(spawnProperties.hairTags)
@@ -83,14 +83,14 @@ namespace Androids
 
                     pawnBeingCrafted.story.hairDef = resultHair;
 
-                    if(pawnBeingCrafted.def is ThingDef_AlienRace alienRaceDef)
-                    {
-                        pawnBeingCrafted.story.hairColor = alienRaceDef.alienRace?.generalSettings?.alienPartGenerator?.colorChannels.FirstOrDefault(channel => channel.name == "hair").first?.NewRandomizedColor() ?? new UnityEngine.Color(1f, 1f, 1f, 1f);
-                    }
+                    //if(pawnBeingCrafted.def is ThingDef_AlienRace alienRaceDef)
+                    //{
+                    //    pawnBeingCrafted.story.hairColor = alienRaceDef.alienRace?.generalSettings?.alienPartGenerator?.colorChannels.FirstOrDefault(channel => channel.name == "hair").first?.NewRandomizedColor() ?? new UnityEngine.Color(1f, 1f, 1f, 1f);
+                    //}
                 }
                 else
                 {
-                    pawnBeingCrafted.story.hairColor = new UnityEngine.Color(1f, 1f, 1f, 1f);
+                    //pawnBeingCrafted.story.hairColor = new UnityEngine.Color(1f, 1f, 1f, 1f);
                     pawnBeingCrafted.story.hairDef = DefDatabase<HairDef>.GetNamed("Shaved");
                 }
 
@@ -110,17 +110,21 @@ namespace Androids
                 PortraitsCache.SetDirty(pawnBeingCrafted);
                 
                 //Backstory
-                Backstory backstory = null;
+                BackstoryDef backstory = null;
                 if (spawnProperties != null && spawnProperties.backstory != null)
                 {
-                    BackstoryDatabase.TryGetWithIdentifier(spawnProperties.backstory.defName, out backstory);
+                    backstory = (from backstoryDef in DefDatabase<BackstoryDef>.AllDefs.ToList() where backstoryDef.defName == spawnProperties.backstory.defName select backstoryDef).First<BackstoryDef>();
+
+                        //TryGetWithIdentifier(spawnProperties.backstory.defName, out backstory);
                 }
                 else
                 {
-                    BackstoryDatabase.TryGetWithIdentifier("ChJAndroid_Droid", out backstory);
+                    backstory = (from backstoryDef in DefDatabase<BackstoryDef>.AllDefs.ToList() where backstoryDef.defName == "ChJAndroid_Droid" select backstoryDef).First<BackstoryDef>();
+
+                  // TryGetWithIdentifier("ChJAndroid_Droid", out backstory);
                 }
                 
-                pawnBeingCrafted.story.childhood = backstory;
+                pawnBeingCrafted.story.Childhood = backstory;
 
                 //Skills
                 if(skills == null || skills.Count <= 0)

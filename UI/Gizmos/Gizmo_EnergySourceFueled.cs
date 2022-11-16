@@ -22,7 +22,7 @@ namespace Androids
 
         public Gizmo_EnergySourceFueled()
         {
-            this.order = -100f;
+            this.Order = -100f;
         }
 
         // Token: 0x0600267C RID: 9852 RVA: 0x0014A874 File Offset: 0x00148C74

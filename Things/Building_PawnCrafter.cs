@@ -35,6 +35,12 @@ namespace Androids
     /// </summary>
     public class Building_PawnCrafter : Building, IThingHolder, IStoreSettingsParent, IPawnCrafter
     {
+
+        public void Notify_SettingsChanged()
+        {
+
+        }
+
         //Variables
         /// <summary>
         /// Stored ingredients for use in producing one pawn.
@@ -527,11 +533,11 @@ namespace Androids
             {
                 if (crafterStatus == CrafterStatus.Crafting)
                 {
-                    powerComp.PowerOutput = -powerComp.Props.basePowerConsumption;
+                    powerComp.PowerOutput = -powerComp.Props.PowerConsumption;
                 }
                 else
                 {
-                    powerComp.PowerOutput = -powerComp.Props.basePowerConsumption * printerProperties.powerConsumptionFactorIdle;
+                    powerComp.PowerOutput = -powerComp.Props.PowerConsumption * printerProperties.powerConsumptionFactorIdle;
                 }
             }
             else
@@ -594,5 +600,6 @@ namespace Androids
         {
             return crafterStatus;
         }
+
     }
 }

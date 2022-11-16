@@ -29,7 +29,7 @@ namespace Androids
                 defaultLabel = "AndroidGizmoDetonateBlackBoxLabel".Translate(),
                 defaultDesc =  "AndroidGizmoDetonateBlackBoxDescription".Translate(),
                 icon = ContentFinder<Texture2D>.Get("Icons/Upgrades/BlackBoxIcon", true),
-                order = -97,
+                Order = -97,
                 action = delegate ()
                 {
                     Dialog_MessageBox dialog = 

@@ -464,8 +464,8 @@ namespace Androids
                     {
                         foreach (AndroidUpgradeDef def in DefDatabase<AndroidUpgradeDef>.AllDefs)
                         {
-                            if (__result.story.childhood != null && def.spawnInBackstories.Contains(__result.story.childhood.untranslatedTitle) ||
-                                __result.story.adulthood != null && def.spawnInBackstories.Contains(__result.story.adulthood.untranslatedTitle))
+                            if (__result.story.Childhood != null && def.spawnInBackstories.Contains(__result.story.Childhood.untranslatedTitle) ||
+                                __result.story.Adulthood != null && def.spawnInBackstories.Contains(__result.story.Adulthood.untranslatedTitle))
                             {
                                 UpgradeCommand command = UpgradeMaker.Make(def);
                                 command.Apply(__result);
@@ -658,7 +658,7 @@ namespace Androids
                         defaultLabel = "AndroidGizmoRechargeNowLabel".Translate(),
                         defaultDesc = "AndroidGizmoRechargeNowDescription".Translate(),
                         icon = ContentFinder<Texture2D>.Get("UI/Commands/TryReconnect", true),
-                        order = -98,
+                        Order = -98,
                         action = delegate()
                         {
                             //Find suitable power source.
@@ -1242,12 +1242,12 @@ namespace Androids
                         if (bodyFacing.IsHorizontal)
                         {
                             //Side
-                            GenDraw.DrawMeshNowOrLater(headMesh, eyeOffset, quat, EffectTextures.GetEyeGraphic(false, pawn.story.hairColor.SaturationChanged(0.6f)).MatSingle, flags.FlagSet(PawnRenderFlags.Portrait));
+                            GenDraw.DrawMeshNowOrLater(headMesh, eyeOffset, quat, EffectTextures.GetEyeGraphic(false, pawn.story.HairColor.SaturationChanged(0.6f)).MatSingle, flags.FlagSet(PawnRenderFlags.Portrait));
                         }
                         else
                         {
                             //Front
-                            GenDraw.DrawMeshNowOrLater(headMesh, eyeOffset, quat, EffectTextures.GetEyeGraphic(true, pawn.story.hairColor.SaturationChanged(0.6f)).MatSingle, flags.FlagSet(PawnRenderFlags.Portrait));
+                            GenDraw.DrawMeshNowOrLater(headMesh, eyeOffset, quat, EffectTextures.GetEyeGraphic(true, pawn.story.HairColor.SaturationChanged(0.6f)).MatSingle, flags.FlagSet(PawnRenderFlags.Portrait));
                         }
                     }
                 }

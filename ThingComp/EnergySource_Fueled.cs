@@ -145,7 +145,7 @@ namespace Androids
                 defaultLabel = "AndroidGizmoAutoRefuelLabel".Translate(),
                 defaultDesc =  "AndroidGizmoAutoRefuelDescription".Translate(),
                 isActive = () => autoRefuel,
-                order = -99,
+                Order = -99,
                 toggleAction = delegate()
                 {
                     autoRefuel = !autoRefuel;
@@ -158,7 +158,7 @@ namespace Androids
                 defaultLabel = "AndroidGizmoRefuelNowLabel".Translate(),
                 defaultDesc =  "AndroidGizmoRefuelNowDescription".Translate(),
                 icon = RimWorld.ThingDefOf.Chemfuel.uiIcon,
-                order = -99,
+                Order = -99,
                 action = delegate()
                 {
                     Apparel apparel = parent as Apparel;

@@ -553,11 +553,11 @@ namespace Androids
             {
                 if (printerStatus == CrafterStatus.Crafting)
                 {
-                    powerComp.PowerOutput = -powerComp.Props.basePowerConsumption;
+                    powerComp.PowerOutput = -powerComp.Props.PowerConsumption;
                 }
                 else
                 {
-                    powerComp.PowerOutput = -powerComp.Props.basePowerConsumption * 0.1f;
+                    powerComp.PowerOutput = -powerComp.Props.PowerConsumption * 0.1f;
                 }
             }
             else
@@ -632,6 +632,11 @@ namespace Androids
         public CrafterStatus PawnCrafterStatus()
         {
             return printerStatus;
+        }
+
+        public void Notify_SettingsChanged()
+        {
+
         }
     }
 }

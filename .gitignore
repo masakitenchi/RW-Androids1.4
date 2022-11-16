@@ -1,6 +1,7 @@
 
 *.ide
 *.lock
+*.vs
 obj/Debug/Androids.dll
 obj/Debug/Androids.csproj.CoreCompileInputs.cache
 obj/Debug/Androids.csproj.FileListAbsolute.txt

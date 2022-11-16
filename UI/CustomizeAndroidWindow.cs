@@ -28,8 +28,8 @@ namespace Androids
 
         //Customization
         public PawnKindDef currentPawnKindDef;
-        public Backstory newChildhoodBackstory;
-        public Backstory newAdulthoodBackstory;
+        public BackstoryDef newChildhoodBackstory;
+        public BackstoryDef newAdulthoodBackstory;
         public Trait replacedTrait;
         public Trait newTrait;
         public List<UpgradeCommand> appliedUpgradeCommands = new List<UpgradeCommand>();
@@ -112,24 +112,25 @@ namespace Androids
             get
             {
                 ThingDef_AlienRace alien = ThingDefOf.ChjAndroid as ThingDef_AlienRace;
-                if(alien == null)
-                {
-                    foreach (Color color in DefaultHairColors)
-                        yield return color;
-                }
-                else
-                {
-                    if(alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "hair").first is ColorGenerator_Options colorOptions)
-                    {
-                        foreach(ColorOption colorOption in colorOptions.options)
-                            yield return colorOption.only;
-                    }
-                    else
-                    {
-                        foreach (Color color in DefaultHairColors)
-                            yield return color;
-                    }
-                }
+                //if(alien == null)
+                //{
+                foreach (Color color in DefaultHairColors)
+                    yield return color;
+                //}
+                //else
+                //{
+                //    ColorChannelGenerator colorOptions = alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "hair")
+                //    if ( colorOptions.)
+                //    {
+                //        foreach(ColorOption colorOption in colorOptions.options)
+                //            yield return colorOption.only;
+                //    }
+                //    else
+                //    {
+                //        foreach (Color color in DefaultHairColors)
+                //            yield return color;
+                //    }
+                //}
 
                 yield break;
             }
@@ -139,12 +140,12 @@ namespace Androids
         {
             get
             {
-                ThingDef_AlienRace alien = ThingDefOf.ChjAndroid as ThingDef_AlienRace;
-                if (alien != null && alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "skin").first is ColorGenerator_Options colorOptions)
-                {
-                    foreach (ColorOption colorOption in colorOptions.options)
-                        yield return colorOption.only;
-                }
+                //ThingDef_AlienRace alien = ThingDefOf.ChjAndroid as ThingDef_AlienRace;
+                //if (alien != null && alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "skin").first is ColorGenerator_Options colorOptions)
+                //{
+                //    foreach (ColorOption colorOption in colorOptions.options)
+                //        yield return colorOption.only;
+                //}
 
                 yield break;
             }
@@ -172,21 +173,21 @@ namespace Androids
 
             if (newChildhoodBackstory != null)
             {
-                newAndroid.story.childhood = newChildhoodBackstory;
+                newAndroid.story.Childhood = newChildhoodBackstory;
                 newChildhoodBackstory = null;
                 RefreshPawn();
             }
 
             if (newAdulthoodBackstory != null)
             {
-                newAndroid.story.adulthood = newAdulthoodBackstory;
+                newAndroid.story.Adulthood = newAdulthoodBackstory;
                 newAdulthoodBackstory = null;
                 RefreshPawn();
             }
 
-            if(newTrait != null)
+            if (newTrait != null)
             {
-                if(replacedTrait != null)
+                if (replacedTrait != null)
                 {
                     newAndroid.story.traits.allTraits.Remove(replacedTrait);
                     replacedTrait = null;
@@ -294,22 +295,23 @@ namespace Androids
                     Rect hairColorRect = new Rect(rowRect);
                     hairColorRect.width = hairColorRect.height;
 
-                    Widgets.DrawBoxSolid(hairColorRect, newAndroid.story.hairColor);
+                    Widgets.DrawBoxSolid(hairColorRect, newAndroid.story.HairColor);
                     Widgets.DrawBox(hairColorRect);
                     Widgets.DrawHighlightIfMouseover(hairColorRect);
 
                     if (Widgets.ButtonInvisible(hairColorRect))
                     {
                         //Change color
-                        Func<Color, Action> setColorAction = (Color color) => delegate {
-                            newAndroid.story.hairColor = color;
+                        Func<Color, Action> setColorAction = (Color color) => delegate
+                        {
+                            newAndroid.story.HairColor = color;
                             newAndroid.Drawer.renderer.graphics.ResolveAllGraphics();
                             PortraitsCache.SetDirty(newAndroid);
                             PortraitsCache.PortraitsCacheUpdate();
                         };
 
                         List<FloatMenuOption> list = new List<FloatMenuOption>();
-                        foreach(Color hairColor in HairColors)
+                        foreach (Color hairColor in HairColors)
                         {
                             list.Add(new FloatMenuOption("AndroidCustomizationChangeColor".Translate(), setColorAction(hairColor), MenuOptionPriority.Default, null, null, 24f, delegate (Rect rect)
                             {
@@ -335,12 +337,12 @@ namespace Androids
                         //Change hairstyle
                         //FloatMenuUtility.
 
-                        IEnumerable<HairDef> hairs = 
+                        IEnumerable<HairDef> hairs =
                             from hairdef in DefDatabase<HairDef>.AllDefs
                             where (newAndroid.gender == Gender.Female && (hairdef.styleGender == StyleGender.Any || hairdef.styleGender == StyleGender.Female || hairdef.styleGender == StyleGender.FemaleUsually)) || (newAndroid.gender == Gender.Male && (hairdef.styleGender == StyleGender.Any || hairdef.styleGender == StyleGender.Male || hairdef.styleGender == StyleGender.MaleUsually))
                             select hairdef;
 
-                        if(hairs != null)
+                        if (hairs != null)
                         {
                             FloatMenuUtility.MakeMenu<HairDef>(hairs, hairDef => hairDef.LabelCap, (HairDef hairDef) => delegate
                             {
@@ -369,7 +371,7 @@ namespace Androids
                 }
 
                 //Race selector (If possible)
-                if(RaceUtility.AlienRaceKinds.Count() > 1)
+                if (RaceUtility.AlienRaceKinds.Count() > 1)
                 {
                     Rect rowRect = new Rect(32 + 16f + 256f, row, 256f - 16f, 24f);
 
@@ -383,7 +385,7 @@ namespace Androids
                             Gender defaultGender = Gender.Female;
 
                             ThingDef_AlienRace alienRaceDef = currentPawnKindDef.race as ThingDef_AlienRace;
-                            if(alienRaceDef != null)
+                            if (alienRaceDef != null)
                             {
                                 if (alienRaceDef.alienRace.generalSettings.maleGenderProbability >= 1f)
                                 {
@@ -443,27 +445,26 @@ namespace Androids
 
                     string label = "";
 
-                    if (newAndroid.story.childhood != null)
-                        label = "AndroidCustomizationFirstIdentity".Translate() + " " + newAndroid.story.childhood.TitleCapFor(newAndroid.gender);
+                    if (newAndroid.story.Childhood != null)
+                        label = "AndroidCustomizationFirstIdentity".Translate() + " " + newAndroid.story.Childhood.TitleCapFor(newAndroid.gender);
                     else
                         label = "AndroidCustomizationFirstIdentity".Translate() + " " + "AndroidNone".Translate();
 
                     if (Widgets.ButtonText(rowRect, label))
                     {
-                        IEnumerable<Backstory> backstories = from backstory in (from backstoryPair in BackstoryDatabase.allBackstories
-                                                              select backstoryPair.Value)
-                                                             where (backstory.spawnCategories.Any(category => (currentPawnKindDef.backstoryCategories != null && currentPawnKindDef.backstoryCategories.Any(subCategory => subCategory == category))) || backstory.spawnCategories.Contains("ChjAndroid")) && backstory.slot == BackstorySlot.Childhood
-                                                             select backstory;
-                        FloatMenuUtility.MakeMenu<Backstory>(backstories, backstory => backstory.TitleCapFor(newAndroid.gender), (Backstory backstory) => delegate
+                        IEnumerable<BackstoryDef> backstories = from backstory in (from backstoryDef in DefDatabase<BackstoryDef>.AllDefs.ToList() select backstoryDef)
+                                                                where (backstory.spawnCategories.Any(category => (currentPawnKindDef.backstoryCategories != null && currentPawnKindDef.backstoryCategories.Any(subCategory => subCategory == category))) || backstory.spawnCategories.Contains("ChjAndroid")) && backstory.slot == BackstorySlot.Childhood
+                                                                select backstory;
+                        FloatMenuUtility.MakeMenu<BackstoryDef>(backstories, backstory => backstory.TitleCapFor(newAndroid.gender), (BackstoryDef backstory) => delegate
                         {
                             newChildhoodBackstory = backstory;
                         });
                     }
 
-                    if (newAndroid.story.childhood != null)
-                        TooltipHandler.TipRegion(rowRect, newAndroid.story.childhood.FullDescriptionFor(newAndroid));
+                    if (newAndroid.story.Childhood != null)
+                        TooltipHandler.TipRegion(rowRect, newAndroid.story.Childhood.FullDescriptionFor(newAndroid));
                 }
-                    
+
                 {
                     Rect rowRect = new Rect(32 + 16f + 256f, row, 256f - 16f, 24f);
 
@@ -472,25 +473,25 @@ namespace Androids
 
                     string label = "";
 
-                    if (newAndroid.story.adulthood != null)
-                        label = "AndroidCustomizationSecondIdentity".Translate() + " " + newAndroid.story.adulthood.TitleCapFor(newAndroid.gender);
+                    if (newAndroid.story.Adulthood != null)
+                        label = "AndroidCustomizationSecondIdentity".Translate() + " " + newAndroid.story.Adulthood.TitleCapFor(newAndroid.gender);
                     else
                         label = "AndroidCustomizationSecondIdentity".Translate() + " " + "AndroidNone".Translate();
 
                     if (Widgets.ButtonText(rowRect, label))
                     {
-                        IEnumerable<Backstory> backstories = from backstory in (from backstoryPair in BackstoryDatabase.allBackstories
-                                                                                select backstoryPair.Value)
+                        IEnumerable<BackstoryDef> backstories = from backstory in (from backstoryDef in DefDatabase<BackstoryDef>.AllDefs.ToList()
+                                                                                select backstoryDef)
                                                              where (backstory.spawnCategories.Any(category => (currentPawnKindDef.backstoryCategories != null && currentPawnKindDef.backstoryCategories.Any(subCategory => subCategory == category))) || backstory.spawnCategories.Contains("ChjAndroid")) && backstory.slot == BackstorySlot.Adulthood
                                                              select backstory;
-                        FloatMenuUtility.MakeMenu<Backstory>(backstories, backstory => backstory.TitleCapFor(newAndroid.gender), (Backstory backstory) => delegate
+                        FloatMenuUtility.MakeMenu<BackstoryDef>(backstories, backstory => backstory.TitleCapFor(newAndroid.gender), (BackstoryDef backstory) => delegate
                         {
                             newAdulthoodBackstory = backstory;
                         });
                     }
 
-                    if(newAndroid.story.adulthood != null)
-                        TooltipHandler.TipRegion(rowRect, newAndroid.story.adulthood.FullDescriptionFor(newAndroid));
+                    if (newAndroid.story.Adulthood != null)
+                        TooltipHandler.TipRegion(rowRect, newAndroid.story.Adulthood.FullDescriptionFor(newAndroid));
                 }
 
                 //Skills
@@ -509,7 +510,7 @@ namespace Androids
 
                 Vector2 skillsVector = new Vector2(32f, row);
 
-                SkillUI.DrawSkillsOf(newAndroid, skillsVector, SkillUI.SkillDrawMode.Gameplay);
+                SkillUI.DrawSkillsOf(newAndroid, skillsVector, SkillUI.SkillDrawMode.Gameplay, skillRerollRect);
 
                 //Costs
                 row = pawnRect.y + pawnRect.height;
@@ -532,7 +533,7 @@ namespace Androids
                     Rect costRect = new Rect(column + 3f + currentCostItem * 32f, row, 26f, 26f);
                     //Widgets.ThingIcon(costRect, RimWorld.ThingDefOf.AncientCryptosleepCasket);
                     Widgets.DrawTextureFitted(costRect, ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Superfast"), 1f);
-                    TooltipHandler.TipRegion(costRect, "AndroidCustomizationTimeCost".Translate() + ": "+ (androidPrinter.PrinterProperties.ticksToCraft + finalExtraPrintingTimeCost).ToStringTicksToPeriodVerbose());
+                    TooltipHandler.TipRegion(costRect, "AndroidCustomizationTimeCost".Translate() + ": " + (androidPrinter.PrinterProperties.ticksToCraft + finalExtraPrintingTimeCost).ToStringTicksToPeriodVerbose());
                     Widgets.DrawHighlightIfMouseover(costRect);
 
                     Widgets.Label(costRect.ExpandedBy(8), "" + (androidPrinter.PrinterProperties.ticksToCraft + finalExtraPrintingTimeCost).ToStringTicksToPeriodVerbose());
@@ -623,17 +624,17 @@ namespace Androids
                     {
                         Widgets.Label(traitLabelRect, trait.LabelCap);
                     }
-                    
+
                     TooltipHandler.TipRegion(traitLabelRect, trait.TipString(newAndroid));
 
                     //Bring up trait selection menu.
-                    if(Widgets.ButtonInvisible(traitLabelRect))
+                    if (Widgets.ButtonInvisible(traitLabelRect))
                     {
                         PickTraitMenu(trait);
                     }
 
                     //Removes this trait.
-                    if(Widgets.ButtonImage(removeButtonRect, TexCommand.ForbidOn))
+                    if (Widgets.ButtonImage(removeButtonRect, TexCommand.ForbidOn))
                     {
                         traitToBeRemoved = trait;
                     }
@@ -729,9 +730,9 @@ namespace Androids
                         int upgradeItem = 0;
                         float upgradeItemRow = 0f;
 
-                        foreach(AndroidUpgradeDef upgrade in groupDef.Upgrades.OrderBy(upgradeSubGroup => upgradeSubGroup.orderID))
+                        foreach (AndroidUpgradeDef upgrade in groupDef.Upgrades.OrderBy(upgradeSubGroup => upgradeSubGroup.orderID))
                         {
-                            if(upgradeItem >= itemsPerRow)
+                            if (upgradeItem >= itemsPerRow)
                             {
                                 upgradeItem = 0;
                                 upgradeItemRow += upgradeSizeBase.height;
@@ -742,7 +743,7 @@ namespace Androids
                             //Button
                             bool needsFulfilled = false;
 
-                            if(Mouse.IsOver(upgradeItemRect))
+                            if (Mouse.IsOver(upgradeItemRect))
                             {
                                 StringBuilder tooltip = new StringBuilder();
                                 tooltip.AppendLine(upgrade.label);
@@ -792,7 +793,7 @@ namespace Androids
                                 appUpgrade.def != upgrade && appUpgrade.def.exclusivityGroups.Any(group => upgrade.exclusivityGroups.Contains(group)));
                             }
 
-                            if(disabledUpgrade)
+                            if (disabledUpgrade)
                             {
                                 Widgets.DrawRectFast(upgradeItemRect, Color.red);
                             }
@@ -802,7 +803,7 @@ namespace Androids
                                     Widgets.DrawRectFast(upgradeItemRect, Color.white);
                             }
 
-                            if(upgrade.iconTexturePath != null)
+                            if (upgrade.iconTexturePath != null)
                             {
                                 Widgets.DrawTextureFitted(upgradeItemRect.ContractedBy(3f), ContentFinder<Texture2D>.Get(upgrade.iconTexturePath), 1f);
                             }
@@ -857,7 +858,7 @@ namespace Androids
 
             foreach (TraitDef def in DefDatabase<TraitDef>.AllDefsListForReading)
             {
-                foreach(TraitDegreeData degree in def.degreeDatas)
+                foreach (TraitDegreeData degree in def.degreeDatas)
                 {
                     Trait trait = new Trait(def, degree.degree, false);
                     allTraits.Add(trait);
@@ -866,7 +867,7 @@ namespace Androids
 
             //Filter out traits the race can NEVER get.
             //AlienComp alienComp = newAndroid.TryGetComp<AlienComp>();
-            if(newAndroid.def is ThingDef_AlienRace alienRaceDef)
+            if (newAndroid.def is ThingDef_AlienRace alienRaceDef)
             {
                 List<RimWorld.TraitDef> disallowedTraits = alienRaceDef?.alienRace?.generalSettings?.disallowedTraits?.Select(trait => trait.defName).ToList();
 
@@ -891,10 +892,10 @@ namespace Androids
                 allTraits.RemoveAll(aTrait => trait.def.conflictingTraits.Contains(aTrait.def));
             }
 
-            FloatMenuUtility.MakeMenu<Trait>(allTraits, 
-                delegate(Trait labelTrait)
+            FloatMenuUtility.MakeMenu<Trait>(allTraits,
+                delegate (Trait labelTrait)
                     {
-                        if(originalTraits.Any(originalTrait => originalTrait.def == labelTrait.def && originalTrait.Degree == labelTrait.Degree))
+                        if (originalTraits.Any(originalTrait => originalTrait.def == labelTrait.def && originalTrait.Degree == labelTrait.Degree))
                         {
                             return "AndroidCustomizationOriginalTraitFloatMenu".Translate(labelTrait.LabelCap);
                         }
@@ -902,9 +903,9 @@ namespace Androids
                         {
                             return labelTrait.LabelCap;
                         }
-                    }, 
-                (Trait theTrait) => 
-                    delegate() 
+                    },
+                (Trait theTrait) =>
+                    delegate ()
                     {
                         Trait oldOldTrait = oldTrait;
                         replacedTrait = oldOldTrait;
@@ -915,7 +916,7 @@ namespace Androids
 
         public void RefreshUpgrades()
         {
-            foreach(UpgradeCommand command in appliedUpgradeCommands)
+            foreach (UpgradeCommand command in appliedUpgradeCommands)
             {
                 command.Apply();
             }
@@ -932,7 +933,7 @@ namespace Androids
             PawnCrafterProperties printerProperties = androidPrinter.def.GetModExtension<PawnCrafterProperties>();
 
             //Copy base costs.
-            foreach(ThingOrderRequest baseCost in printerProperties.costList)
+            foreach (ThingOrderRequest baseCost in printerProperties.costList)
             {
                 ThingOrderRequest baseCostCopy = new ThingOrderRequest();
                 baseCostCopy.amount = baseCost.amount;
@@ -946,12 +947,12 @@ namespace Androids
             //Add costs from upgrades.
             List<ThingDef> thingsExemptedFromBodySize = new List<ThingDef>();
 
-            foreach(UpgradeCommand upgrade in appliedUpgradeCommands)
+            foreach (UpgradeCommand upgrade in appliedUpgradeCommands)
             {
-                foreach(ThingOrderRequest upgradeCost in upgrade.def.costList)
+                foreach (ThingOrderRequest upgradeCost in upgrade.def.costList)
                 {
                     //Attempt to merge costs if possible.
-                    if(finalCalculatedPrintingCost.FirstOrDefault(finalCost => finalCost.thingDef == upgradeCost.thingDef || finalCost.nutrition && upgradeCost.nutrition) is ThingOrderRequest finalRequest)
+                    if (finalCalculatedPrintingCost.FirstOrDefault(finalCost => finalCost.thingDef == upgradeCost.thingDef || finalCost.nutrition && upgradeCost.nutrition) is ThingOrderRequest finalRequest)
                     {
                         finalRequest.amount += upgradeCost.amount;
                     }
@@ -972,7 +973,7 @@ namespace Androids
             }
 
             //Only get a list of all distinct defs.
-            if(thingsExemptedFromBodySize.Count > 0)
+            if (thingsExemptedFromBodySize.Count > 0)
                 thingsExemptedFromBodySize = new List<ThingDef>(thingsExemptedFromBodySize.Distinct());
 
             //Add costs from traits.
@@ -980,19 +981,19 @@ namespace Androids
             //Deduct costs from original traits.
             int traitTimePenaltyCost = 45000;
             int traitsTimeCost = 0;
-            foreach(Trait trait in newAndroid.story.traits.allTraits)
+            foreach (Trait trait in newAndroid.story.traits.allTraits)
             {
                 traitsTimeCost += traitTimePenaltyCost;
 
-                if(originalTraits.Any(originalTrait => originalTrait.def == trait.def && originalTrait.Degree == trait.Degree))
+                if (originalTraits.Any(originalTrait => originalTrait.def == trait.def && originalTrait.Degree == trait.Degree))
                 {
                     traitsTimeCost -= traitTimePenaltyCost;
                 }
             }
             //Add cost for each missing original trait.
-            foreach(Trait originalTrait in originalTraits)
+            foreach (Trait originalTrait in originalTraits)
             {
-                if(!newAndroid.story.traits.allTraits.Any(trait => originalTrait.def == trait.def && originalTrait.Degree == trait.Degree))
+                if (!newAndroid.story.traits.allTraits.Any(trait => originalTrait.def == trait.def && originalTrait.Degree == trait.Degree))
                 {
                     traitsTimeCost += traitTimePenaltyCost;
                 }
@@ -1003,7 +1004,7 @@ namespace Androids
             //Deduct costs from body size.
             foreach (ThingOrderRequest cost in finalCalculatedPrintingCost)
             {
-                if(!thingsExemptedFromBodySize.Contains(cost.thingDef))
+                if (!thingsExemptedFromBodySize.Contains(cost.thingDef))
                     cost.amount = (float)Math.Ceiling(cost.amount * newAndroid.def.race.baseBodySize);
             }
         }
@@ -1068,11 +1069,11 @@ namespace Androids
             {
                 num = Rand.ByCurve(LevelRandomCurve);
             }
-            foreach (Backstory current in from bs in pawn.story.AllBackstories
+            foreach (BackstoryDef current in from bs in pawn.story.AllBackstories
                                           where bs != null
                                           select bs)
             {
-                foreach (KeyValuePair<SkillDef, int> current2 in current.skillGainsResolved)
+                foreach (KeyValuePair<SkillDef, int> current2 in current.skillGains)
                 {
                     if (current2.Key == sk)
                     {
@@ -1101,11 +1102,11 @@ namespace Androids
             Pawn pawn;
 
             //Make Android-like if not a Android.
-            if(currentPawnKindDef.race != ThingDefOf.ChjAndroid)
+            if (currentPawnKindDef.race != ThingDefOf.ChjAndroid)
             {
                 HarmonyPatches.bypassGenerationOfUpgrades = true;
                 pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(currentPawnKindDef, androidPrinter.Faction, RimWorld.PawnGenerationContext.NonPlayer,
-                -1, true, false, false, false, false, false, 0f, false, true, true, false, false, false, true, fixedGender: gender));
+                -1, true, false, false, false, false,  0f, false, false, true, true, false, false, false, true, fixedGender: gender));
                 HarmonyPatches.bypassGenerationOfUpgrades = false;
 
                 //Give random skin and hair color.
@@ -1113,7 +1114,7 @@ namespace Androids
 
                 //Post process age to adulthood. Two methods.
                 LifeStageAge adultLifestage = pawn.RaceProps.lifeStageAges.Last();
-                if(adultLifestage != null)
+                if (adultLifestage != null)
                 {
                     long ageInTicks = (long)Math.Ceiling(adultLifestage.minAge) * (long)GenDate.TicksPerYear;
 
@@ -1133,7 +1134,7 @@ namespace Androids
             {
                 HarmonyPatches.bypassGenerationOfUpgrades = true;
                 pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(currentPawnKindDef, androidPrinter.Faction, RimWorld.PawnGenerationContext.NonPlayer,
-                -1, true, false, false, false, false, false, 0f, false, true, true, false, false, false, true, fixedGender: gender, fixedBiologicalAge: 20, fixedChronologicalAge: 20));
+                -1, true, false, false, false, false,  0f, false, false, true, true, false, false, false, true, fixedGender: gender, fixedBiologicalAge: 20, fixedChronologicalAge: 20));
                 HarmonyPatches.bypassGenerationOfUpgrades = false;
             }
 
@@ -1143,7 +1144,7 @@ namespace Androids
 
             //Strip off clothes and replace with bandages.
             pawn.apparel.DestroyAll();
-            if(pawn.apparel.CanWearWithoutDroppingAnything(ThingDefOf.ChJAndroidThermalBandages))
+            if (pawn.apparel.CanWearWithoutDroppingAnything(ThingDefOf.ChJAndroidThermalBandages))
                 pawn.apparel.Wear((Apparel)ThingMaker.MakeThing(ThingDefOf.ChJAndroidThermalBandages, ThingDef.Named("Synthread")));
 
             //Refresh disabled skills and work.

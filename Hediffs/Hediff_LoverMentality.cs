@@ -48,7 +48,7 @@ namespace Androids
                 defaultLabel = "AndroidGizmoLoverMentalityLabel".Translate(),
                 defaultDesc = "AndroidGizmoLoverMentalityDescription".Translate(),
                 icon = ContentFinder<Texture2D>.Get("Icons/Upgrades/love-mystery", true),
-                order = -97,
+                Order = -97,
                 action = delegate ()
                 {
                     //Valid lovers are within the colony.

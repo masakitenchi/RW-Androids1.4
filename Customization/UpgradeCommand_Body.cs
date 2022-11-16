@@ -40,7 +40,7 @@ namespace Androids
             if (targetPawn.def is ThingDef_AlienRace alienDef)
             {
                 //Check if the alien race can use this body.
-                canChangeBodyType = alienDef.alienRace.generalSettings.alienPartGenerator.alienbodytypes.Contains(def.newBodyType);
+                canChangeBodyType = alienDef.alienRace.generalSettings.alienPartGenerator.bodyTypes.Contains(def.newBodyType);
             }
             else
             {

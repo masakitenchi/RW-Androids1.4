@@ -14,12 +14,12 @@ namespace Androids
         public static void Androidify(Pawn pawn)
         {
             ThingDef_AlienRace alien = ThingDefOf.ChjAndroid as ThingDef_AlienRace;
-            pawn.story.hairColor = alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "hair").first.NewRandomizedColor();
+            //pawn.story.HairColor = alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "hair").first.NewRandomizedColor();
             AlienComp alienComp = pawn.TryGetComp<AlienComp>();
-            if (alienComp != null)
-            {
-                alienComp.ColorChannels["skin"].first = alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "skin").first.NewRandomizedColor();
-            }
+            //if (alienComp != null)
+            //{
+            //   alienComp.ColorChannels["skin"].first = alien.alienRace.generalSettings.alienPartGenerator.colorChannels.FirstOrDefault(channel => channel.name == "skin").first.NewRandomizedColor();
+            //}
             PortraitsCache.SetDirty(pawn);
             PortraitsCache.PortraitsCacheUpdate();
 
