@@ -32,6 +32,7 @@ namespace Androids
         /// Body to use.
         /// </summary>
         public BodyTypeDef bodyType;
+        public HeadTypeDef headType;
 
         /// <summary>
         /// Gender to set when spawning.

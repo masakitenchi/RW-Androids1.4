@@ -750,11 +750,11 @@ namespace Androids
                                 tooltip.AppendLine();
                                 tooltip.AppendLine(upgrade.description);
                                 tooltip.AppendLine();
-                                if (upgrade.hediffToApply != null && upgrade.hediffToApply.ConcreteExample != null)
-                                {
-                                    tooltip.AppendLine(upgrade.hediffToApply.ConcreteExample.TipStringExtra.TrimEndNewlines());
-                                    tooltip.AppendLine();
-                                }
+                                //if (upgrade.hediffToApply != null && upgrade.hediffToApply.ConcreteExample != null)
+                                //{
+                                //    tooltip.AppendLine(upgrade.hediffToApply.ConcreteExample.TipStringExtra.TrimEndNewlines());
+                                //    tooltip.AppendLine();
+                                //}
                                 if (upgrade.newBodyType != null)
                                 {
                                     tooltip.AppendLine("AndroidCustomizationChangeBodyType".Translate());

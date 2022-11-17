@@ -28,19 +28,20 @@ namespace Androids
         /// <returns>New Pawn if successful. Null if not.</returns>
         public static Pawn MakeDroidTemplate(PawnKindDef pawnKindDef, Faction faction, int tile, List<SkillRequirement> skills = null, int defaultSkillLevel = 6)
         {
+            Log.Message(pawnKindDef.ToString() + "\n");
+            Log.Message(faction.ToString() + "\n");
+            Log.Message("tile" + tile + "\n");
             Map map = null;
             if(tile > -1)
             {
                 map = Current.Game?.FindMap(tile);
             }
 
-            //Log.Message("Map: " + map);
 
             //Manually craft a Droid Pawn.
             Pawn pawnBeingCrafted = (Pawn)ThingMaker.MakeThing(pawnKindDef.race);
             if (pawnBeingCrafted == null)
                 return null;
-
             //Kind, Faction and initial Components.
             pawnBeingCrafted.kindDef = pawnKindDef;
             if(faction != null)
@@ -49,16 +50,13 @@ namespace Androids
             }
             PawnComponentsUtility.CreateInitialComponents(pawnBeingCrafted);
 
-            //Gender
             pawnBeingCrafted.gender = Gender.Male;
 
             //Set Needs at initial levels.
             pawnBeingCrafted.needs.SetInitialLevels();
 
-            //Set age
             pawnBeingCrafted.ageTracker.AgeBiologicalTicks = 0;
             pawnBeingCrafted.ageTracker.AgeChronologicalTicks = 0;
-
             //Set Story
             if (pawnBeingCrafted.RaceProps.Humanlike)
             {
@@ -69,31 +67,32 @@ namespace Androids
                     pawnBeingCrafted.gender = spawnProperties.gender;
                     pawnBeingCrafted.playerSettings.hostilityResponse = spawnProperties.hostileResponse;
                 }
+                //pawnBeingCrafted.story.headType = new HeadTypeDef();
+                //pawnBeingCrafted.story.headType.gender = Gender.Male;
+             //   pawnBeingCrafted.story.headType.graphicPath = "Things/ChjDroid/Heads/";
 
-                //Appearance
                 //pawnBeingCrafted.story.melanin = 1f;
-                pawnBeingCrafted.story.headType.gender = pawnBeingCrafted.gender;
+               // pawnBeingCrafted.story.headType.gender = pawnBeingCrafted.gender;
 
-                if (spawnProperties != null && spawnProperties.generateHair)
-                {
-                    IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                                  where hair.styleTags.SharesElementWith(spawnProperties.hairTags)
-                                                  select hair;
-                    HairDef resultHair = source.RandomElementByWeightWithFallback((hair) => HairChoiceLikelihoodFor(hair, pawnBeingCrafted), DefDatabase<HairDef>.GetNamed("Shaved"));
+                //if (spawnProperties != null && spawnProperties.generateHair)
+                //{
+                //    IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
+                //                                  where hair.styleTags.SharesElementWith(spawnProperties.hairTags)
+                //                                  select hair;
+                //    HairDef resultHair = source.RandomElementByWeightWithFallback((hair) => HairChoiceLikelihoodFor(hair, pawnBeingCrafted), DefDatabase<HairDef>.GetNamed("Shaved"));
 
-                    pawnBeingCrafted.story.hairDef = resultHair;
+                //    pawnBeingCrafted.story.hairDef = resultHair;
 
-                    //if(pawnBeingCrafted.def is ThingDef_AlienRace alienRaceDef)
-                    //{
-                    //    pawnBeingCrafted.story.hairColor = alienRaceDef.alienRace?.generalSettings?.alienPartGenerator?.colorChannels.FirstOrDefault(channel => channel.name == "hair").first?.NewRandomizedColor() ?? new UnityEngine.Color(1f, 1f, 1f, 1f);
-                    //}
-                }
-                else
-                {
-                    //pawnBeingCrafted.story.hairColor = new UnityEngine.Color(1f, 1f, 1f, 1f);
-                    pawnBeingCrafted.story.hairDef = DefDatabase<HairDef>.GetNamed("Shaved");
-                }
-
+                //    //if(pawnBeingCrafted.def is ThingDef_AlienRace alienRaceDef)
+                //    //{
+                //    //    pawnBeingCrafted.story.hairColor = alienRaceDef.alienRace?.generalSettings?.alienPartGenerator?.colorChannels.FirstOrDefault(channel => channel.name == "hair").first?.NewRandomizedColor() ?? new UnityEngine.Color(1f, 1f, 1f, 1f);
+                //    //}
+                //}
+                //else
+                //{
+                //    //pawnBeingCrafted.story.hairColor = new UnityEngine.Color(1f, 1f, 1f, 1f);
+                //    pawnBeingCrafted.story.hairDef = DefDatabase<HairDef>.GetNamed("Shaved");
+                //}
                 pawnBeingCrafted.style.beardDef = BeardDefOf.NoBeard;
                 pawnBeingCrafted.style.BodyTattoo = TattooDefOf.NoTattoo_Body;
                 pawnBeingCrafted.style.FaceTattoo = TattooDefOf.NoTattoo_Face;
@@ -106,7 +105,10 @@ namespace Androids
                 {
                     pawnBeingCrafted.story.bodyType = BodyTypeDefOf.Thin;
                 }
-
+                if (spawnProperties != null && spawnProperties.headType != null)
+                {
+                    pawnBeingCrafted.story.headType = spawnProperties.headType;
+                }
                 PortraitsCache.SetDirty(pawnBeingCrafted);
                 
                 //Backstory
@@ -123,7 +125,6 @@ namespace Androids
 
                   // TryGetWithIdentifier("ChJAndroid_Droid", out backstory);
                 }
-                
                 pawnBeingCrafted.story.Childhood = backstory;
 
                 //Skills
