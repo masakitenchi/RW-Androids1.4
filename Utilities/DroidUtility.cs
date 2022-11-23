@@ -28,9 +28,6 @@ namespace Androids
         /// <returns>New Pawn if successful. Null if not.</returns>
         public static Pawn MakeDroidTemplate(PawnKindDef pawnKindDef, Faction faction, int tile, List<SkillRequirement> skills = null, int defaultSkillLevel = 6)
         {
-            Log.Message(pawnKindDef.ToString() + "\n");
-            Log.Message(faction.ToString() + "\n");
-            Log.Message("tile" + tile + "\n");
             Map map = null;
             if(tile > -1)
             {
@@ -55,8 +52,12 @@ namespace Androids
             //Set Needs at initial levels.
             pawnBeingCrafted.needs.SetInitialLevels();
 
-            pawnBeingCrafted.ageTracker.AgeBiologicalTicks = 0;
-            pawnBeingCrafted.ageTracker.AgeChronologicalTicks = 0;
+            //pawnBeingCrafted.ageTracker.AgeBiologicalTicks = 0;
+            //pawnBeingCrafted.ageTracker.AgeChronologicalTicks = 0;
+            long ageInTicks = 18 * (long)GenDate.TicksPerYear;
+
+            pawnBeingCrafted.ageTracker.AgeBiologicalTicks = ageInTicks;
+            pawnBeingCrafted.ageTracker.AgeChronologicalTicks = ageInTicks;
             //Set Story
             if (pawnBeingCrafted.RaceProps.Humanlike)
             {

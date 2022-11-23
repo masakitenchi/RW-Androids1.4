@@ -1113,22 +1113,10 @@ namespace Androids
                 AndroidUtility.Androidify(pawn);
 
                 //Post process age to adulthood. Two methods.
-                LifeStageAge adultLifestage = pawn.RaceProps.lifeStageAges.Last();
-                if (adultLifestage != null)
-                {
-                    long ageInTicks = (long)Math.Ceiling(adultLifestage.minAge) * (long)GenDate.TicksPerYear;
+                long ageInTicks = 18 * (long)GenDate.TicksPerYear;
 
-                    pawn.ageTracker.AgeBiologicalTicks = ageInTicks;
-                    pawn.ageTracker.AgeChronologicalTicks = ageInTicks;
-                }
-                else
-                {
-                    //Max age
-                    long ageInTicks = (long)(pawn.RaceProps.lifeExpectancy * (long)GenDate.TicksPerYear * 0.2f);
-
-                    pawn.ageTracker.AgeBiologicalTicks = ageInTicks;
-                    pawn.ageTracker.AgeChronologicalTicks = ageInTicks;
-                }
+                pawn.ageTracker.AgeBiologicalTicks = ageInTicks;
+                pawn.ageTracker.AgeChronologicalTicks = ageInTicks;
             }
             else
             {
