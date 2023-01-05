@@ -750,11 +750,16 @@ namespace Androids
                                 tooltip.AppendLine();
                                 tooltip.AppendLine(upgrade.description);
                                 tooltip.AppendLine();
-                                //if (upgrade.hediffToApply != null && upgrade.hediffToApply.ConcreteExample != null)
-                                //{
-                                //    tooltip.AppendLine(upgrade.hediffToApply.ConcreteExample.TipStringExtra.TrimEndNewlines());
-                                //    tooltip.AppendLine();
-                                //}
+                                if (upgrade.hediffToApply != null && upgrade.hediffToApply.ConcreteExample != null)
+                                {
+                                    //Using TipStringExtra will result in null reference hediff instance since there's no pawn have this hediff yet. Manually send null for Hediff instance solve this problem.
+                                    foreach(StatDrawEntry item in HediffStatsUtility.SpecialDisplayStats(upgrade.hediffToApply.ConcreteExample.CurStage,null))
+                                    {
+                                        if(item.ShouldDisplay)
+                                            tooltip.AppendLine("  - " + item.LabelCap + ": " + item.ValueString);
+                                    }
+                                    tooltip.AppendLine();
+                                }
                                 if (upgrade.newBodyType != null)
                                 {
                                     tooltip.AppendLine("AndroidCustomizationChangeBodyType".Translate());
